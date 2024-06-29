@@ -1,0 +1,12 @@
+services:
+  recruitis.api.client:
+    class: GuzzleHttp\Client
+    arguments:
+      $config:
+        base_uri: '%env(RECRUITIS_API_BASE_URI)%'
+        headers:
+          Authorization: 'Bearer %env(RECRUITIS_API_TOKEN)%'
+
+  # NOTE: This is default HTTP Client service.
+  GuzzleHttp\ClientInterface: '@recruitis.api.client'
+  
