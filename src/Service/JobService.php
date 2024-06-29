@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Dto\JobsResponseDto;
 use App\Dto\ParamsDto;
 use GuzzleHttp\ClientInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 final class JobService
 {
@@ -13,17 +16,18 @@ final class JobService
 
     public function __construct(
         private ClientInterface $recruitisApiClient,
+        private SerializerInterface&DenormalizerInterface $serializer,
     ) {
     }
 
-    public function getJobs(?ParamsDto $params = null): array
+    public function getJobs(?ParamsDto $params = null): JobsResponseDto
     {
         $options = [
             'query' => $params?->toArray() ?? [],
         ];
         $response = $this->recruitisApiClient->request('GET', self::SLUG_JOBS, $options);
         $content = $response->getBody()->getContents();
-        $jobs = json_decode($content, true, flags: JSON_THROW_ON_ERROR);
+        $jobs = $this->serializer->deserialize($content, JobsResponseDto::class, 'json');
 
         return $jobs;
     }
