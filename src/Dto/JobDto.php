@@ -51,7 +51,7 @@ final class JobDto
         private array $addresses,
         private NamedDto $employment,
         private ?array $stats,
-        private array $salary,
+        private ?array $salary,
         private array $channels,
         private string $editLink,
         private string $publicLink,
@@ -218,9 +218,9 @@ final class JobDto
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, mixed>|null
      */
-    public function getSalary(): array
+    public function getSalary(): ?array
     {
         return $this->salary;
     }

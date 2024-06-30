@@ -12,12 +12,12 @@
     </div>
 {% endfor %}
 
-{% if (page > 1) %}
-    <a href="{{ path('jobs', {'page': page - 1}) }}">Previous</a>
+{% if (params.page > 1) %}
+    <a href="{{ path('jobs', {'page': params.page - 1}) }}">Previous</a>
 {% endif %}
 
 {% if (jobs.getMeta().getEntriesTo() < jobs.getMeta().getEntriesTotal()) %}
-    <a href="{{ path('jobs', {'page': page + 1}) }}">Next</a>
+    <a href="{{ path('jobs', {'page': params.page + 1}) }}">Next</a>
 {% endif %}
 
 {% endblock %}

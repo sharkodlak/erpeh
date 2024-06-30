@@ -9,3 +9,4 @@ Položka stats má být object or null.
 Položka automations má být array of objects or null.
 Položka education je object a ne pole objektů.
 Položka employment je object a ne pole objektů.
+Položka salary má být object or null.
