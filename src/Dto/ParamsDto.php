@@ -44,7 +44,7 @@ final class ParamsDto
             'limit' => $this->limit,
             'page' => $this->page,
             'with_automation' => (int) $this->withAutomation,
-            'text_language' => $this->textlanguage->value,
+            'text_language' => $this->textlanguage?->value,
             'workfield_ids' => $this->workfieldIds,
             'office_ids' => $this->officeIds,
             'filter_ids' => $this->filterIds,

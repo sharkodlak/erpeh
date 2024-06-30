@@ -105,6 +105,10 @@ class JobServiceTest extends TestCase
             $data['meta']['code'],
             $data['meta']['message'],
             $data['meta']['duration'],
+            $data['meta']['entries_from'],
+            $data['meta']['entries_to'],
+            $data['meta']['entries_total'],
+            $data['meta']['entries_sum'],
         );
         $jobsResponseDto = new JobsResponseDto($payload, $meta);
         $this->serializer
