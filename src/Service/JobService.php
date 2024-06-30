@@ -9,6 +9,7 @@ use App\Dto\ParamsDto;
 use App\Exception\RecruitisApiException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
+use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
@@ -31,11 +32,15 @@ final class JobService
 
         try {
             $response = $this->recruitisApiClient->request('GET', self::SLUG_JOBS, $options);
-            $content = $response->getBody()->getContents();
+            $bodyStream = $response->getBody();
+            $bodyStream->rewind();
+            $content = $bodyStream->getContents();
             $jobs = $this->serializer->deserialize($content, JobsResponseDto::class, 'json');
         } catch (ClientException $exception) {
             $response = $exception->getResponse();
-            $content = $response->getBody()->getContents();
+            $bodyStream = $response->getBody();
+            $bodyStream->rewind();
+            $content = $bodyStream->getContents();
             $data = json_decode($content, true);
             throw new RecruitisApiException($data['meta']['code'], $exception->getCode(), $exception);
         } catch (Throwable $exception) {

@@ -24,6 +24,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN docker-php-ext-install pdo_pgsql
 
+RUN pecl install redis && \
+    docker-php-ext-enable redis
+
 EXPOSE 9000
 
 CMD ["php-fpm"]

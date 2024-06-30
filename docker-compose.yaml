@@ -25,3 +25,12 @@ services:
             - ./:/app:cached
             - ~/.composer:/root/.composer:delegated
         working_dir: /app
+        links:
+            - redis
+        depends_on:
+            - redis
+
+    redis:
+        image: redis:alpine
+        ports:
+            - "6379:6379"
