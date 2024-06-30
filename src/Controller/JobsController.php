@@ -20,7 +20,7 @@ final class JobsController extends AbstractController
         $jobs = $this->jobService->getJobs();
 
         return $this->render('jobs/index.html.twig', [
-            'controller_name' => 'JobsController',
+            'jobs' => $jobs,
         ]);
     }
 }

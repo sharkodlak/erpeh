@@ -7,6 +7,7 @@ namespace App\Tests\Service;
 use App\Dto\JobDto;
 use App\Dto\JobsResponseDto;
 use App\Dto\MetaDto;
+use App\Dto\NamedDto;
 use App\Service\JobService;
 use App\Tests\DataProvider;
 use DateTimeImmutable;
@@ -80,16 +81,16 @@ class JobServiceTest extends TestCase
                 new DateTimeImmutable($job['date_created']),
                 $job['text_language'],
                 $job['fte'] ?? null,
-                $job['workfields'],
+                array_map(static fn (array $item): NamedDto => new NamedDto(...$item), $job['workfields']),
                 $job['filter_list'] ?? null,
-                $job['education'],
+                new NamedDto(...$job['education']),
                 $job['disability'],
                 $job['details'],
                 $job['personalist'],
                 $job['contact'],
                 $job['sharing'],
                 $job['addresses'],
-                $job['employment'],
+                new NamedDto(...$job['employment']),
                 $job['stats'] ?? null,
                 $job['salary'],
                 $job['channels'],

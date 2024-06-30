@@ -9,10 +9,24 @@ services:
 
   # NOTE: This is default HTTP Client service.
   GuzzleHttp\ClientInterface: '@recruitis.api.client'
-  
+
+  Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor: ~
+  Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor: ~
+
+  Symfony\Component\PropertyInfo\PropertyInfoExtractor:
+    arguments:
+      - [ '@Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor' ]
+      - [ '@Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor' ]
+
+  serializer.normalizer.datetime:
+    class: Symfony\Component\Serializer\Normalizer\DateTimeNormalizer
+    arguments:
+      $defaultContext:
+        datetime_format: 'Y-m-d H:i:s'
+
   Symfony\Component\Serializer\Serializer:
     arguments:
-      - [ '@serializer.normalizer.object' ]
+      - [ '@serializer.normalizer.datetime', '@serializer.normalizer.object', '@serializer.normalizer.array' ]
       - [ '@serializer.encoder.json' ]
     tags:
       - { name: serializer.normalizer }
@@ -21,6 +35,20 @@ services:
     class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
     arguments:
       $nameConverter: '@serializer.name_converter.camel_case_to_snake_case_name_converter'
+      $propertyTypeExtractor: '@Symfony\Component\PropertyInfo\PropertyInfoExtractor'
+
+  serializer.normalizer.array:
+    class: Symfony\Component\Serializer\Normalizer\ArrayDenormalizer
 
   serializer.name_converter.camel_case_to_snake_case_name_converter:
     class: Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter
+
+  serializer.property_type_extractor:
+    class: Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory
+    arguments:
+      - '@serializer.mapping.loader.annotation_loader'
+
+  serializer.mapping.loader.annotation_loader:
+    class: Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader
+    arguments:
+      - '@annotation_reader'

@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace App\Dto;
 
-class JobsResponseDto
+use ArrayIterator;
+use IteratorAggregate;
+use Traversable;
+
+/**
+ * @implements IteratorAggregate<JobDto>
+ */
+class JobsResponseDto implements IteratorAggregate
 {
     /**
      * @param JobDto[] $payload
@@ -26,5 +33,10 @@ class JobsResponseDto
     public function getMeta(): MetaDto
     {
         return $this->meta;
+    }
+
+    public function getIterator(): Traversable
+    {
+        return new ArrayIterator($this->payload);
     }
 }

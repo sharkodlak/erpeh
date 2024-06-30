@@ -6,19 +6,17 @@ namespace App\Dto;
 
 use DateTimeInterface;
 
-class JobDto
+final class JobDto
 {
     /**
      * @param array{value: float, active: bool} $fte
-     * @param array{id: int, name: string}[] $workfields
-     * @param array{id: int, name: string, group: string, group_id: int}[]|null $filterList
-     * @param array{id: int, name: string}[] $education
+     * @param NamedDto[] $workfields
+     * @param FilterDto[]|null $filterList
      * @param array<string, mixed> $details
      * @param array<string, mixed> $personalist
      * @param array<string, mixed> $contact
      * @param array<string, mixed>[]|null $sharing
      * @param array<string, mixed>[] $addresses
-     * @param array<string, mixed>[] $employment
      * @param array<string, mixed> $stats
      * @param array<string, mixed> $salary
      * @param array<string, mixed> $channels
@@ -44,14 +42,14 @@ class JobDto
         private ?array $fte,
         private array $workfields,
         private ?array $filterList,
-        private array $education,
+        private NamedDto $education,
         private ?bool $disability,
         private array $details,
         private array $personalist,
         private array $contact,
         private ?array $sharing,
         private array $addresses,
-        private array $employment,
+        private NamedDto $employment,
         private ?array $stats,
         private array $salary,
         private array $channels,
@@ -141,7 +139,7 @@ class JobDto
     }
 
     /**
-     * @return array{id: int, name: string}[]
+     * @return NamedDto[]
      */
     public function getWorkfields(): array
     {
@@ -149,17 +147,14 @@ class JobDto
     }
 
     /**
-     * @return array{id: int, name: string, group: string, group_id: int}[]|null
+     * @return FilterDto[]|null
      */
     public function getFilterList(): ?array
     {
         return $this->filterList;
     }
 
-    /**
-     * @return array{id: int, name: string}[]
-     */
-    public function getEducation(): array
+    public function getEducation(): NamedDto
     {
         return $this->education;
     }
@@ -209,10 +204,7 @@ class JobDto
         return $this->addresses;
     }
 
-    /**
-     * @return array<string, mixed>[]
-     */
-    public function getEmployment(): array
+    public function getEmployment(): NamedDto
     {
         return $this->employment;
     }
